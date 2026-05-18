@@ -1,0 +1,10 @@
+{
+  "/api/cron/publish/route": "app/api/cron/publish/route.js",
+  "/api/channels/connect/[platform]/route": "app/api/channels/connect/[platform]/route.js",
+  "/api/posts/create/route": "app/api/posts/create/route.js",
+  "/api/contact/route": "app/api/contact/route.js",
+  "/page": "app/page.js",
+  "/contact/page": "app/contact/page.js",
+  "/(dash)/dashboard/page": "app/(dash)/dashboard/page.js",
+  "/(dash)/composer/page": "app/(dash)/composer/page.js"
+}

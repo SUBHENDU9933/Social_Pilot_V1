@@ -1,89 +1,109 @@
-from fastapi import FastAPI, APIRouter
-from dotenv import load_dotenv
-from starlette.middleware.cors import CORSMiddleware
-from motor.motor_asyncio import AsyncIOMotorClient
+"""
+FastAPI thin reverse-proxy.
+
+The Kubernetes ingress in this preview environment forwards any path that
+starts with `/api` to port 8001 (this service). The real Next.js application
+(which contains all of the actual API route handlers under `src/app/api/*`)
+runs on port 3000. This proxy forwards `/api/*` requests to Next.js so that
+the Next.js API routes are reachable from the public URL.
+
+In production (Vercel) this proxy is NOT used — Next.js handles `/api/*`
+directly. This file exists purely for the dev preview environment.
+"""
+
 import os
-import logging
-from pathlib import Path
-from pydantic import BaseModel, Field, ConfigDict
-from typing import List
-import uuid
-from datetime import datetime, timezone
+import httpx
+from fastapi import FastAPI, Request, Response
+from fastapi.responses import JSONResponse
+from starlette.middleware.cors import CORSMiddleware
 
+NEXT_INTERNAL_URL = os.environ.get("NEXT_INTERNAL_URL", "http://localhost:3000")
 
-ROOT_DIR = Path(__file__).parent
-load_dotenv(ROOT_DIR / '.env')
-
-# MongoDB connection
-mongo_url = os.environ['MONGO_URL']
-client = AsyncIOMotorClient(mongo_url)
-db = client[os.environ['DB_NAME']]
-
-# Create the main app without a prefix
-app = FastAPI()
-
-# Create a router with the /api prefix
-api_router = APIRouter(prefix="/api")
-
-
-# Define Models
-class StatusCheck(BaseModel):
-    model_config = ConfigDict(extra="ignore")  # Ignore MongoDB's _id field
-    
-    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    client_name: str
-    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-
-class StatusCheckCreate(BaseModel):
-    client_name: str
-
-# Add your routes to the router instead of directly to app
-@api_router.get("/")
-async def root():
-    return {"message": "Hello World"}
-
-@api_router.post("/status", response_model=StatusCheck)
-async def create_status_check(input: StatusCheckCreate):
-    status_dict = input.model_dump()
-    status_obj = StatusCheck(**status_dict)
-    
-    # Convert to dict and serialize datetime to ISO string for MongoDB
-    doc = status_obj.model_dump()
-    doc['timestamp'] = doc['timestamp'].isoformat()
-    
-    _ = await db.status_checks.insert_one(doc)
-    return status_obj
-
-@api_router.get("/status", response_model=List[StatusCheck])
-async def get_status_checks():
-    # Exclude MongoDB's _id field from the query results
-    status_checks = await db.status_checks.find({}, {"_id": 0}).to_list(1000)
-    
-    # Convert ISO string timestamps back to datetime objects
-    for check in status_checks:
-        if isinstance(check['timestamp'], str):
-            check['timestamp'] = datetime.fromisoformat(check['timestamp'])
-    
-    return status_checks
-
-# Include the router in the main app
-app.include_router(api_router)
+app = FastAPI(title="PostPilot AI – Next.js Proxy")
 
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=True,
-    allow_origins=os.environ.get('CORS_ORIGINS', '*').split(','),
+    allow_origins=["*"],
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
-logger = logging.getLogger(__name__)
+_client: httpx.AsyncClient | None = None
+
+
+@app.on_event("startup")
+async def _startup() -> None:
+    global _client
+    _client = httpx.AsyncClient(timeout=60.0)
+
 
 @app.on_event("shutdown")
-async def shutdown_db_client():
-    client.close()
+async def _shutdown() -> None:
+    global _client
+    if _client is not None:
+        await _client.aclose()
+
+
+@app.get("/api/_proxy/health")
+async def health() -> dict:
+    return {"ok": True, "proxy": "fastapi", "target": NEXT_INTERNAL_URL}
+
+
+HOP_BY_HOP = {
+    "connection",
+    "keep-alive",
+    "proxy-authenticate",
+    "proxy-authorization",
+    "te",
+    "trailers",
+    "transfer-encoding",
+    "upgrade",
+    "host",
+    "content-length",
+}
+
+
+@app.api_route(
+    "/api/{path:path}",
+    methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+)
+async def proxy(path: str, request: Request) -> Response:
+    """Forward every `/api/*` request to Next.js on port 3000."""
+    assert _client is not None
+    target_url = f"{NEXT_INTERNAL_URL}/api/{path}"
+    if request.url.query:
+        target_url += f"?{request.url.query}"
+
+    body = await request.body()
+    forward_headers = {
+        k: v for k, v in request.headers.items() if k.lower() not in HOP_BY_HOP
+    }
+
+    try:
+        upstream = await _client.request(
+            request.method,
+            target_url,
+            headers=forward_headers,
+            content=body,
+            follow_redirects=False,
+        )
+    except httpx.RequestError as exc:
+        return JSONResponse(
+            {"error": "Upstream Next.js server unavailable", "detail": str(exc)},
+            status_code=502,
+        )
+
+    resp_headers = {
+        k: v for k, v in upstream.headers.items() if k.lower() not in HOP_BY_HOP
+    }
+    return Response(
+        content=upstream.content,
+        status_code=upstream.status_code,
+        headers=resp_headers,
+    )
+
+
+@app.get("/")
+async def root() -> dict:
+    return {"service": "PostPilot AI proxy", "ok": True}

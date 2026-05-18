@@ -1,0 +1,96 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 210 100% 99%;
+    --foreground: 215 67% 19%;
+    --card: 0 0% 100%;
+    --card-foreground: 215 67% 19%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 215 67% 19%;
+    --primary: 215 67% 19%;
+    --primary-foreground: 210 100% 99%;
+    --secondary: 210 100% 96%;
+    --secondary-foreground: 215 67% 19%;
+    --muted: 210 100% 96%;
+    --muted-foreground: 214 100% 65%;
+    --accent: 22 100% 55%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 210 100% 92%;
+    --input: 210 100% 92%;
+    --ring: 214 100% 65%;
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: 210 67% 8%;
+    --foreground: 213 100% 93%;
+    --card: 210 53% 16%;
+    --card-foreground: 213 100% 93%;
+    --popover: 210 53% 16%;
+    --popover-foreground: 213 100% 93%;
+    --primary: 214 100% 65%;
+    --primary-foreground: 210 67% 8%;
+    --secondary: 210 53% 20%;
+    --secondary-foreground: 213 100% 93%;
+    --muted: 210 53% 20%;
+    --muted-foreground: 214 100% 65%;
+    --accent: 22 100% 55%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 213 100% 93%;
+    --border: 210 53% 22%;
+    --input: 210 53% 22%;
+    --ring: 214 100% 65%;
+  }
+
+  * {
+    @apply border-border;
+  }
+  html,
+  body {
+    @apply bg-bg-light text-ink-light;
+    font-family: "DM Sans", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  body.dashboard {
+    @apply bg-bg-dark text-ink-dark;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: "Sora", sans-serif;
+    letter-spacing: -0.02em;
+  }
+
+  ::selection {
+    background: #ff7a1a;
+    color: #fff;
+  }
+}
+
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+  .grid-faint-bg {
+    background-image:
+      linear-gradient(rgba(15,45,82,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(15,45,82,0.06) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+  .grid-faint-bg-dark {
+    background-image:
+      linear-gradient(rgba(77,168,255,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(77,168,255,0.05) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+  .radar-glow {
+    background: radial-gradient(circle at 50% 50%, rgba(77,168,255,0.18), transparent 65%);
+  }
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(77,168,255,0.3) transparent;
+  }
+}

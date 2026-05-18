@@ -1,0 +1,34 @@
+{
+  "summary": "Backend-only regression test of PostPilot AI Next.js+FastAPI proxy architecture. 16/16 pytest tests passed against the public preview URL covering proxy health, CRON_SECRET auth, channel mock/real-OAuth branches, posts preview mode, contact form, and input validation.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_postpilot_api.py",
+    "/app/backend/tests/conftest.py",
+    "/app/test_reports/pytest/pytest_results.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "posts/create POST: when Supabase IS configured but `targets` items contain invalid channel_asset_id (e.g. 'x'), the route will hit the admin client and likely 500. Currently safe because supabase placeholder triggers preview branch — but once real Supabase is wired, add explicit per-target validation.",
+    "channels/connect: route does not check authenticated user — once Supabase is live, anyone hitting POST /api/channels/connect/<platform> will get an OAuth URL or mock payload. Add session check via supabase.auth.getUser() before returning.",
+    "cron/publish: catch-all swallows real DB errors and reports 'configured:false' with HTTP 200. This is fine for placeholder mode but in production an actual DB outage will be masked as 'not configured'. Consider distinguishing between 'placeholder env' vs 'real-but-erroring' (check NEXT_PUBLIC_SUPABASE_URL contains 'placeholder').",
+    "backend/server.py uses deprecated `@app.on_event('startup'/'shutdown')` — FastAPI now recommends `lifespan` async context manager. Non-blocking, but worth migrating."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_postpilot_api.py (new)",
+    "/app/backend/tests/conftest.py (new)"
+  ],
+  "success_rate": {"backend": "100%", "frontend": "N/A — frontend testing not requested"},
+  "test_credentials": "CRON_SECRET=postpilot_cron_secret_change_me (from /app/frontend/.env.local). No user-auth credentials needed — Supabase is in placeholder mode and middleware bypasses auth by design.",
+  "seed_data_creation": "None — preview/echo mode in posts route means no DB writes occurred.",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Tests live in /app/backend/tests/. conftest.py auto-loads REACT_APP_BACKEND_URL from /app/frontend/.env so just `cd /app && pytest backend/tests/ -v` works. All 16 endpoints in scope are green. When Supabase real-creds are wired, expect tests `test_create_post_preview_mode` and `test_cron_with_valid_secret_returns_200` to need updates (they currently expect preview:true / configured:false branches). Channel mock tests will still pass for LinkedIn/Pinterest/GBP/YouTube/X since those are explicitly mocked. Facebook test will need META_APP_ID to switch from mock to real-OAuth branch."
+}
