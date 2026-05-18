@@ -1,0 +1,118 @@
+{
+  "theme_archetype": {
+    "domain": "Social Media SaaS",
+    "theme": "Hybrid (Light Theme for Marketing / Dark Theme for Dashboard)",
+    "archetype": "Archetype 4 (Swiss & High-Contrast) + Custom Premium Navy/Aviation Motif",
+    "rationale": "The domain is a professional productivity/marketing tool, blending Buffer's clarity with Linear's dark polish. The UI requires intense authority, data clarity, and high-end aviation-themed aesthetics based on the user's specific color choices."
+  },
+  "colors": {
+    "brand": {
+      "primary_navy": "#0F2D52",
+      "sky_blue": "#4DA8FF",
+      "accent_orange": "#FF7A1A"
+    },
+    "backgrounds": {
+      "light": {
+        "base": "#F8FBFF",
+        "section": "#EAF4FF"
+      },
+      "dark": {
+        "base": "#081826",
+        "card": "#12283D"
+      }
+    },
+    "text": {
+      "light_theme": {
+        "primary": "#0F2D52",
+        "muted": "#4DA8FF"
+      },
+      "dark_theme": {
+        "primary": "#DDEBFF",
+        "muted": "#4DA8FF"
+      }
+    },
+    "system": {
+      "success": "#10b981",
+      "warning": "#FF7A1A",
+      "error": "#ef4444"
+    }
+  },
+  "typography": {
+    "fonts": {
+      "headings": "Sora, sans-serif",
+      "body": "DM Sans, sans-serif"
+    },
+    "hierarchy": {
+      "h1": "text-4xl sm:text-5xl lg:text-6xl tracking-tighter font-black",
+      "h2": "text-2xl sm:text-3xl lg:text-4xl tracking-tight font-bold",
+      "h3": "text-xl sm:text-2xl tracking-tight font-semibold",
+      "body": "text-base leading-relaxed font-normal",
+      "label": "text-xs tracking-[0.2em] uppercase font-bold text-[#4DA8FF]"
+    }
+  },
+  "layout_and_spacing": {
+    "spacing_scale": "Generous Spacing (p-8, p-12, p-24) on marketing pages. Dense, functional spacing (p-4, p-6) on Dashboard.",
+    "grids": {
+      "marketing": "Bento-style grids (Tetris Grid), asymmetrical arrangements, off-canvas alignments.",
+      "dashboard": "Control Room Grid (1-3-4 columns). H-full constraints, strict dense layout for optimal data visualization."
+    },
+    "surfaces": {
+      "marketing_cards": "Flat solid background with 1px subtle border, soft ambient shadow. Crystal glass for nav: backdrop-blur-xl bg-[#F8FBFF]/70.",
+      "dashboard_cards": "bg-[#12283D] border-[#4DA8FF]/10 with subtle inner glow. Rounded-xl for premium feel, minimizing shadow dependency."
+    }
+  },
+  "components": {
+    "buttons": {
+      "primary": "bg-[#FF7A1A] text-white hover:bg-[#FF7A1A]/90 hover:text-white transition-all rounded-md px-6 py-3 font-semibold",
+      "secondary": "bg-[#0F2D52] text-[#F8FBFF] hover:bg-[#12283D] hover:text-[#F8FBFF] transition-all rounded-md px-6 py-3",
+      "outline": "border border-[#4DA8FF]/30 text-[#4DA8FF] hover:bg-[#4DA8FF]/10 hover:text-[#4DA8FF]"
+    },
+    "navigation": "Fixed header. Light mode on marketing (Glassmorphism bg-[#F8FBFF]/70 backdrop-blur-md). Sidebar in dashboard (Dark #081826 with #12283D active states).",
+    "inputs": "Shadcn based. Dark mode inputs: bg-[#081826] border-[#4DA8FF]/20 focus:ring-2 focus:ring-[#4DA8FF] text-[#DDEBFF].",
+    "testing": "All interactive and key informational elements MUST include a data-testid attribute in kebab-case format."
+  },
+  "motion": {
+    "hover_states": "Smooth transitions (transition-all duration-300 ease-in-out), slight Y-axis lift on cards (-translate-y-1).",
+    "page_transitions": "Fade-in using Framer Motion.",
+    "micro_interactions": "Sidebar collapsable animation, Skeleton loading for dashboard widgets, subtle scale on button press."
+  },
+  "visual_cues": {
+    "aviation_theme": "Tasteful integration of flight paths, compass lines, altitude grids. Do not overuse. Use as subtle background textures (e.g. bg-grid-white/[0.02] or polar grid rings). Use precise UI elements reminiscent of cockpit dashboards without being cliché."
+  },
+  "media": {
+    "hero_background": {
+      "url": "https://static.prod-images.emergentagent.com/jobs/16a0eb61-f58d-4d17-8b63-8e68a30b7015/images/b13e5cc89f030bef1d8273336bff41a08ebf7b1578ddb4ec846995b8a413c193.png",
+      "description": "Abstract minimal geometric background, aviation radar inspired for dark tech sections."
+    },
+    "aviation_graphic": {
+      "url": "https://static.prod-images.emergentagent.com/jobs/16a0eb61-f58d-4d17-8b63-8e68a30b7015/images/0e42baeea15a99fa14ff0b0b1d7925a1508b774caea86f898fa7bdce8acfa988.png",
+      "description": "Minimalist glowing concentric circles, altitude lines, compass rose inspired."
+    },
+    "testimonials": [
+      {
+        "url": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA2MjJ8MHwxfHNlYXJjaHwzfHxwcm9mZXNzaW9uYWwlMjBoZWFkc2hvdCUyMHNtaWxpbmd8ZW58MHx8fHwxNzc5MTI3ODMxfDA&ixlib=rb-4.1.0&q=85",
+        "description": "Professional headshot for testimonial"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1699899657680-421c2c2d5064?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA2MjJ8MHwxfHNlYXJjaHwyfHxwcm9mZXNzaW9uYWwlMjBoZWFkc2hvdCUyMHNtaWxpbmd8ZW58MHx8fHwxNzc5MTI3ODMxfDA&ixlib=rb-4.1.0&q=85",
+        "description": "Professional headshot for testimonial 2"
+      }
+    ],
+    "marketing_team": [
+      {
+        "url": "https://images.unsplash.com/photo-1523240795612-9a054b0db644?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA2MjJ8MHwxfHNlYXJjaHwzfHxjcmVhdGl2ZSUyMG1hcmtldGluZyUyMHRlYW0lMjB3b3JraW5nfGVufDB8fHx8MTc3OTEyNzgzMXww&ixlib=rb-4.1.0&q=85",
+        "description": "Creative marketing team working, suitable for feature section or about page"
+      }
+    ]
+  },
+  "instructions_to_main_agent": [
+    "Build the landing page with Next.js 15 App router. Use Light theme primarily for marketing pages (#F8FBFF background).",
+    "Dashboard must be strictly Dark Premium (#081826 background, #12283D cards) with highly legible white/blue text (#DDEBFF).",
+    "Use Sora for all headings and DM Sans for body text. Enforce strict letter spacing rules.",
+    "Integrate ShadCN for standard components but override colors to match the brand palette exactly.",
+    "Implement the aviation aesthetic through subtle borders (e.g., radar lines, 1px dashed lines in grids, compass cues).",
+    "Use framer-motion for page transitions and hover states.",
+    "Never use placeholders for images. Use the provided URLs.",
+    "Add 'data-testid' to all interactive and key informational elements."
+  ]
+}
