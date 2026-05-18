@@ -79,13 +79,13 @@ export function QueueView() {
     <div className="space-y-6" data-testid="queue-view">
       <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-3">
         <div>
-          <p className="text-xs uppercase tracking-[0.3em] text-[#4DA8FF] font-bold">
+          <p className="text-xs uppercase tracking-[0.3em] text-accent-blue font-bold">
             Departures
           </p>
           <h1 className="font-sora text-3xl md:text-4xl font-black mt-1">
             Content queue
           </h1>
-          <p className="text-[#DDEBFF]/65 text-sm mt-1">
+          <p className="text-muted-foreground text-sm mt-1">
             Drag to reorder. Pause to halt all scheduled departures.
           </p>
         </div>
@@ -107,34 +107,34 @@ export function QueueView() {
         </div>
       </div>
 
-      <div className="rounded-xl border border-[#4DA8FF]/15 bg-[#12283D]">
-        <div className="px-6 py-4 border-b border-[#4DA8FF]/10 flex items-center justify-between text-xs text-[#DDEBFF]/55">
+      <div className="rounded-xl border border-border bg-card">
+        <div className="px-6 py-4 border-b border-border flex items-center justify-between text-xs text-muted-foreground">
           <span className="flex items-center gap-2">
             <ListOrdered className="w-3.5 h-3.5" /> {items.length} posts in queue
           </span>
           {paused && <Badge variant="warning">Queue paused</Badge>}
         </div>
 
-        <div className="divide-y divide-[#4DA8FF]/10">
+        <div className="divide-y divide-border">
           {items.map((it) => (
             <div
               key={it.id}
               draggable
               onDragStart={() => onDragStart(it.id)}
               onDragOver={(e) => onDragOver(e, it.id)}
-              className="group px-6 py-4 flex items-center gap-4 hover:bg-[#081826] transition-colors cursor-grab active:cursor-grabbing"
+              className="group px-6 py-4 flex items-center gap-4 hover:bg-secondary/40 transition-colors cursor-grab active:cursor-grabbing"
               data-testid={`queue-item-${it.id}`}
             >
-              <GripVertical className="w-4 h-4 text-[#DDEBFF]/30 group-hover:text-[#DDEBFF]/70" />
-              <span className="font-mono text-xs text-[#4DA8FF] w-32 shrink-0">{it.time}</span>
+              <GripVertical className="w-4 h-4 text-muted-foreground group-hover:text-muted-foreground" />
+              <span className="font-mono text-xs text-accent-blue w-32 shrink-0">{it.time}</span>
               <div className="flex-1 min-w-0">
                 <p className="text-sm truncate">{it.content}</p>
                 <div className="flex items-center gap-2 mt-1.5">
                   {it.platforms.map((p) => {
                     const Icon = ICONS[p as PlatformKey];
                     return (
-                      <span key={p} className="w-5 h-5 rounded-sm bg-[#081826] grid place-items-center">
-                        <Icon className="w-2.5 h-2.5 text-[#4DA8FF]" />
+                      <span key={p} className="w-5 h-5 rounded-sm bg-secondary/40 grid place-items-center">
+                        <Icon className="w-2.5 h-2.5 text-accent-blue" />
                       </span>
                     );
                   })}
@@ -142,9 +142,9 @@ export function QueueView() {
                 </div>
               </div>
               <div className="flex items-center gap-1 opacity-60 group-hover:opacity-100 transition-opacity">
-                <button className="w-8 h-8 grid place-items-center rounded hover:bg-[#12283D]" data-testid={`queue-edit-${it.id}`}><Edit className="w-3.5 h-3.5" /></button>
-                <button className="w-8 h-8 grid place-items-center rounded hover:bg-[#12283D]" onClick={() => duplicate(it.id)} data-testid={`queue-duplicate-${it.id}`}><Copy className="w-3.5 h-3.5" /></button>
-                <button className="w-8 h-8 grid place-items-center rounded hover:bg-[#12283D] text-red-400" onClick={() => remove(it.id)} data-testid={`queue-delete-${it.id}`}><Trash2 className="w-3.5 h-3.5" /></button>
+                <button className="w-8 h-8 grid place-items-center rounded hover:bg-card" data-testid={`queue-edit-${it.id}`}><Edit className="w-3.5 h-3.5" /></button>
+                <button className="w-8 h-8 grid place-items-center rounded hover:bg-card" onClick={() => duplicate(it.id)} data-testid={`queue-duplicate-${it.id}`}><Copy className="w-3.5 h-3.5" /></button>
+                <button className="w-8 h-8 grid place-items-center rounded hover:bg-card text-red-400" onClick={() => remove(it.id)} data-testid={`queue-delete-${it.id}`}><Trash2 className="w-3.5 h-3.5" /></button>
               </div>
             </div>
           ))}

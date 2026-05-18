@@ -8,38 +8,48 @@ import {
   PenLine,
   ListOrdered,
   Calendar,
-  BarChart3,
   Network,
+  BarChart3,
   Users,
   Settings,
-  Plane,
-  LogOut,
-  ChevronLeft,
-  ChevronRight,
-  Bell,
   Search,
+  Bell,
+  Plus,
+  LogOut,
+  ChevronDown,
+  Home,
+  Crown,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
 const NAV = [
-  { href: "/dashboard", label: "Today", icon: LayoutDashboard, testid: "nav-today" },
+  { href: "/dashboard", label: "Dashboard", icon: Home, testid: "nav-dashboard" },
   { href: "/composer", label: "Compose", icon: PenLine, testid: "nav-compose" },
   { href: "/queue", label: "Queue", icon: ListOrdered, testid: "nav-queue" },
   { href: "/calendar", label: "Calendar", icon: Calendar, testid: "nav-calendar" },
-  { href: "/analytics", label: "Analytics", icon: BarChart3, testid: "nav-analytics" },
   { href: "/channels", label: "Channels", icon: Network, testid: "nav-channels" },
+  { href: "/analytics", label: "Analytics", icon: BarChart3, testid: "nav-analytics" },
   { href: "/team", label: "Team", icon: Users, testid: "nav-team" },
   { href: "/settings", label: "Settings", icon: Settings, testid: "nav-settings" },
+];
+
+const MOBILE_NAV = [
+  { href: "/dashboard", label: "Home", icon: Home },
+  { href: "/composer", label: "Compose", icon: PenLine },
+  { href: "/queue", label: "Queue", icon: ListOrdered },
+  { href: "/calendar", label: "Calendar", icon: Calendar },
+  { href: "/settings", label: "More", icon: Settings },
 ];
 
 export function DashboardShell({
@@ -51,50 +61,37 @@ export function DashboardShell({
 }) {
   const pathname = usePathname();
   const router = useRouter();
-  const [collapsed, setCollapsed] = useState(false);
 
   async function handleLogout() {
-    try {
-      await fetch("/api/auth/logout", { method: "POST" });
-      toast.success("Signed out");
-      router.push("/auth/login");
-      router.refresh();
-    } catch {
-      toast.error("Could not sign out");
-    }
+    await fetch("/api/auth/logout", { method: "POST" });
+    toast.success("Signed out");
+    router.push("/auth/login");
+    router.refresh();
   }
 
   const initials = (user?.name || user?.email || "P P")
-    .split(" ")
-    .map((s) => s[0])
-    .slice(0, 2)
-    .join("")
-    .toUpperCase();
+    .split(" ").map((s) => s[0]).slice(0, 2).join("").toUpperCase();
+  const displayName = user?.name || user?.email?.split("@")[0] || "Pilot";
 
   return (
-    <div className="min-h-screen flex bg-[#081826] text-[#DDEBFF]" data-testid="dashboard-shell">
-      {/* Sidebar */}
+    <div className="min-h-screen flex bg-background text-foreground" data-testid="dashboard-shell">
+      {/* Sidebar — desktop */}
       <aside
-        className={cn(
-          "shrink-0 border-r border-[#4DA8FF]/10 bg-[#081826] transition-[width] duration-300",
-          collapsed ? "w-16" : "w-64",
-        )}
+        className="hidden lg:flex w-64 shrink-0 border-r border-border bg-card flex-col"
         data-testid="sidebar"
       >
-        <div className="h-16 flex items-center px-4 border-b border-[#4DA8FF]/10">
+        <div className="h-16 flex items-center px-6 border-b border-border">
           <Link href="/dashboard" className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-md bg-[#FF7A1A] grid place-items-center shrink-0">
-              <Plane className="w-4 h-4 text-white -rotate-45" />
+            <div className="w-9 h-9 rounded-xl bg-brand grid place-items-center shadow-glow">
+              <svg className="w-5 h-5 text-white -rotate-45" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2 L4 20 L12 16 L20 20 Z" />
+              </svg>
             </div>
-            {!collapsed && (
-              <span className="font-sora font-extrabold text-sm whitespace-nowrap">
-                PostPilot<span className="text-[#FF7A1A]">.</span>AI
-              </span>
-            )}
+            <span className="font-sora font-extrabold text-base text-foreground">PostPilot AI</span>
           </Link>
         </div>
 
-        <nav className="p-3 space-y-0.5">
+        <nav className="flex-1 p-4 space-y-1 overflow-y-auto scrollbar-thin">
           {NAV.map((item) => {
             const active = pathname === item.href || (item.href !== "/dashboard" && pathname.startsWith(item.href));
             return (
@@ -103,95 +100,152 @@ export function DashboardShell({
                 href={item.href}
                 data-testid={item.testid}
                 className={cn(
-                  "flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium transition-colors",
+                  "group flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all",
                   active
-                    ? "bg-[#12283D] text-[#FF7A1A]"
-                    : "text-[#DDEBFF]/70 hover:bg-[#12283D]/60 hover:text-[#DDEBFF]",
+                    ? "bg-brand-50 text-brand"
+                    : "text-muted-foreground hover:bg-secondary hover:text-foreground",
                 )}
               >
-                <item.icon className="w-4 h-4 shrink-0" />
-                {!collapsed && <span>{item.label}</span>}
-                {active && !collapsed && (
-                  <span className="ml-auto w-1.5 h-1.5 rounded-full bg-[#FF7A1A]" />
-                )}
+                <item.icon className={cn("w-[18px] h-[18px] shrink-0", active && "text-brand")} />
+                <span>{item.label}</span>
               </Link>
             );
           })}
         </nav>
 
-        <div className="absolute bottom-4 left-3 right-3" style={{ position: "absolute" }}>
-          <button
-            onClick={() => setCollapsed(!collapsed)}
-            className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-md text-xs text-[#DDEBFF]/50 hover:text-[#DDEBFF] hover:bg-[#12283D]/60"
-            data-testid="sidebar-collapse"
-          >
-            {collapsed ? <ChevronRight className="w-3.5 h-3.5" /> : <><ChevronLeft className="w-3.5 h-3.5" /> Collapse</>}
-          </button>
+        {/* Bottom: Upgrade card + Profile */}
+        <div className="p-4 border-t border-border space-y-3">
+          <div className="rounded-2xl border border-border bg-secondary/40 p-4">
+            <div className="flex items-center gap-2 text-xs font-semibold text-foreground">
+              <Crown className="w-4 h-4 text-warning" />
+              Your trial ends in 14 days
+            </div>
+            <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">
+              Upgrade to unlock more powerful features.
+            </p>
+            <Button size="sm" className="w-full mt-3" data-testid="sidebar-upgrade">
+              Upgrade Now
+            </Button>
+          </div>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button
+                className="w-full flex items-center gap-2.5 p-2 rounded-xl hover:bg-secondary transition-colors"
+                data-testid="sidebar-profile"
+              >
+                <Avatar className="w-9 h-9">
+                  {user?.avatar && <AvatarImage src={user.avatar} alt={displayName} />}
+                  <AvatarFallback className="bg-brand text-white text-xs">{initials}</AvatarFallback>
+                </Avatar>
+                <div className="flex-1 min-w-0 text-left">
+                  <p className="text-sm font-semibold truncate">{displayName}</p>
+                  <p className="text-xs text-muted-foreground truncate">{user?.email}</p>
+                </div>
+                <ChevronDown className="w-4 h-4 text-muted-foreground" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" side="top">
+              <DropdownMenuItem onClick={() => router.push("/settings")}>
+                <Settings className="w-4 h-4 mr-2" /> Settings
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={handleLogout} data-testid="usermenu-logout">
+                <LogOut className="w-4 h-4 mr-2" /> Sign out
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </aside>
 
       {/* Main */}
       <div className="flex-1 flex flex-col min-w-0">
-        <header
-          className="h-16 border-b border-[#4DA8FF]/10 px-6 flex items-center gap-4 sticky top-0 z-30 bg-[#081826]/90 backdrop-blur-md"
-          data-testid="dashboard-topbar"
-        >
-          <div className="flex-1 relative max-w-md">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#4DA8FF]" />
+        {/* Top header */}
+        <header className="h-16 border-b border-border bg-card/80 backdrop-blur-md sticky top-0 z-30 flex items-center gap-3 px-4 lg:px-8">
+          <Link href="/dashboard" className="lg:hidden flex items-center gap-2">
+            <div className="w-8 h-8 rounded-lg bg-brand grid place-items-center">
+              <svg className="w-4 h-4 text-white -rotate-45" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2 L4 20 L12 16 L20 20 Z" />
+              </svg>
+            </div>
+            <span className="font-sora font-extrabold text-sm">PostPilot AI</span>
+          </Link>
+
+          <div className="flex-1 max-w-xl hidden md:block relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <input
               type="text"
-              placeholder="Search posts, channels, members…"
-              className="w-full h-10 pl-9 pr-3 rounded-md bg-[#12283D] border border-[#4DA8FF]/10 text-sm text-[#DDEBFF] placeholder:text-[#DDEBFF]/40 focus:outline-none focus:border-[#4DA8FF]/40"
+              placeholder="Search posts, channels, analytics..."
+              className="w-full h-10 pl-9 pr-12 rounded-lg bg-secondary/50 border border-transparent text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:bg-card focus:border-border transition"
               data-testid="topbar-search"
             />
+            <kbd className="absolute right-3 top-1/2 -translate-y-1/2 hidden md:flex items-center h-6 px-2 rounded text-xs text-muted-foreground bg-card border border-border font-mono">
+              ⌘K
+            </kbd>
           </div>
 
+          <div className="flex-1 md:hidden" />
+
           <Link href="/composer">
-            <button
-              className="hidden md:inline-flex h-10 px-4 rounded-md bg-[#FF7A1A] text-white text-sm font-semibold items-center gap-2 hover:bg-[#FF7A1A]/90"
-              data-testid="topbar-new-post"
-            >
-              <PenLine className="w-4 h-4" /> New post
-            </button>
+            <Button size="sm" className="h-10 px-4" data-testid="topbar-new-post">
+              <Plus className="w-4 h-4 mr-1.5" /> New Post
+            </Button>
           </Link>
 
           <button
-            className="w-10 h-10 rounded-md border border-[#4DA8FF]/15 grid place-items-center text-[#DDEBFF]/70 hover:text-[#DDEBFF] hover:bg-[#12283D]"
+            className="relative w-10 h-10 rounded-lg border border-border bg-card hover:bg-secondary grid place-items-center"
             data-testid="topbar-notifications"
           >
-            <Bell className="w-4 h-4" />
+            <Bell className="w-4 h-4 text-muted-foreground" />
+            <span className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full bg-brand text-[10px] text-white font-bold grid place-items-center">3</span>
           </button>
+
+          <ThemeToggle />
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="flex items-center gap-2" data-testid="topbar-user-menu">
+              <button className="flex items-center gap-2 lg:hidden" data-testid="topbar-user-menu">
                 <Avatar className="w-9 h-9">
-                  {user?.avatar && <AvatarImage src={user.avatar} alt={user?.name || ""} />}
-                  <AvatarFallback>{initials}</AvatarFallback>
+                  {user?.avatar && <AvatarImage src={user.avatar} alt={displayName} />}
+                  <AvatarFallback className="bg-brand text-white text-xs">{initials}</AvatarFallback>
                 </Avatar>
               </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuLabel>
-                <p className="text-sm text-[#DDEBFF]">{user?.name || "Pilot"}</p>
-                <p className="text-xs text-[#DDEBFF]/50 normal-case tracking-normal">
-                  {user?.email}
-                </p>
-              </DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => router.push("/settings")} data-testid="usermenu-settings">
+              <DropdownMenuItem onClick={() => router.push("/settings")}>
                 <Settings className="w-4 h-4 mr-2" /> Settings
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={handleLogout} data-testid="usermenu-logout">
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={handleLogout}>
                 <LogOut className="w-4 h-4 mr-2" /> Sign out
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </header>
 
-        <main className="flex-1 p-6 lg:p-8" data-testid="dashboard-main">
+        <main className="flex-1 p-4 lg:p-8 pb-24 lg:pb-8 overflow-x-hidden" data-testid="dashboard-main">
           {children}
         </main>
+
+        {/* Mobile bottom nav */}
+        <nav className="lg:hidden fixed bottom-0 inset-x-0 z-30 border-t border-border bg-card/95 backdrop-blur-md grid grid-cols-5 h-16">
+          {MOBILE_NAV.map((it) => {
+            const active = pathname === it.href || (it.href !== "/dashboard" && pathname.startsWith(it.href));
+            return (
+              <Link
+                key={it.href}
+                href={it.href}
+                className={cn(
+                  "flex flex-col items-center justify-center gap-1 text-[10px] font-medium",
+                  active ? "text-brand" : "text-muted-foreground",
+                )}
+              >
+                <it.icon className="w-5 h-5" />
+                {it.label}
+              </Link>
+            );
+          })}
+        </nav>
       </div>
     </div>
   );

@@ -2,13 +2,13 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 const variantStyles = {
-  default: "bg-[#4DA8FF]/15 text-[#4DA8FF] border-[#4DA8FF]/20",
-  accent: "bg-[#FF7A1A]/15 text-[#FF7A1A] border-[#FF7A1A]/30",
-  success: "bg-emerald-500/15 text-emerald-500 border-emerald-500/30",
-  warning: "bg-amber-500/15 text-amber-500 border-amber-500/30",
-  danger: "bg-red-500/15 text-red-500 border-red-500/30",
-  navy: "bg-[#0F2D52]/10 text-[#0F2D52] border-[#0F2D52]/20",
-  outline: "bg-transparent text-[#DDEBFF] border-[#4DA8FF]/25",
+  default: "bg-accent-blue/10 text-accent-blue border-accent-blue/15",
+  accent: "bg-brand/10 text-brand border-brand/20",
+  success: "bg-success-soft text-success border-success/20",
+  warning: "bg-warning-soft text-warning border-warning/20",
+  danger: "bg-red-50 text-red-600 border-red-200",
+  navy: "bg-secondary text-foreground border-border",
+  outline: "bg-transparent text-muted-foreground border-border",
 } as const;
 
 export function Badge({
@@ -19,7 +19,7 @@ export function Badge({
   return (
     <div
       className={cn(
-        "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium uppercase tracking-wider",
+        "inline-flex items-center rounded-md border px-2 py-0.5 text-xs font-medium",
         variantStyles[variant],
         className,
       )}

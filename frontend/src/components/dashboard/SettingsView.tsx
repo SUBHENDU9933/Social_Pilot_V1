@@ -33,7 +33,7 @@ export function SettingsView() {
   return (
     <div className="space-y-6" data-testid="settings-view">
       <div>
-        <p className="text-xs uppercase tracking-[0.3em] text-[#4DA8FF] font-bold">Cockpit Config</p>
+        <p className="text-xs uppercase tracking-[0.3em] text-accent-blue font-bold">Cockpit Config</p>
         <h1 className="font-sora text-3xl md:text-4xl font-black mt-1">Settings</h1>
       </div>
 
@@ -63,7 +63,7 @@ export function SettingsView() {
                 <Input
                   value={profile.name}
                   onChange={(e) => setProfile({ ...profile, name: e.target.value })}
-                  className="bg-[#081826] text-[#DDEBFF] border-[#4DA8FF]/20"
+                  className="bg-secondary/40 text-foreground border-border"
                   data-testid="profile-name"
                 />
               </Field>
@@ -71,7 +71,7 @@ export function SettingsView() {
                 <Input
                   value={profile.title}
                   onChange={(e) => setProfile({ ...profile, title: e.target.value })}
-                  className="bg-[#081826] text-[#DDEBFF] border-[#4DA8FF]/20"
+                  className="bg-secondary/40 text-foreground border-border"
                 />
               </Field>
             </Row>
@@ -79,14 +79,14 @@ export function SettingsView() {
               <Input
                 value={profile.email}
                 onChange={(e) => setProfile({ ...profile, email: e.target.value })}
-                className="bg-[#081826] text-[#DDEBFF] border-[#4DA8FF]/20"
+                className="bg-secondary/40 text-foreground border-border"
               />
             </Field>
             <Field label="Bio">
               <Textarea
                 value={profile.bio}
                 onChange={(e) => setProfile({ ...profile, bio: e.target.value })}
-                className="bg-[#081826] text-[#DDEBFF] border-[#4DA8FF]/20"
+                className="bg-secondary/40 text-foreground border-border"
                 rows={3}
               />
             </Field>
@@ -101,7 +101,7 @@ export function SettingsView() {
                 <Input
                   value={workspace.name}
                   onChange={(e) => setWorkspace({ ...workspace, name: e.target.value })}
-                  className="bg-[#081826] text-[#DDEBFF] border-[#4DA8FF]/20"
+                  className="bg-secondary/40 text-foreground border-border"
                   data-testid="workspace-name"
                 />
               </Field>
@@ -109,7 +109,7 @@ export function SettingsView() {
                 <Input
                   value={workspace.slug}
                   onChange={(e) => setWorkspace({ ...workspace, slug: e.target.value })}
-                  className="bg-[#081826] text-[#DDEBFF] border-[#4DA8FF]/20"
+                  className="bg-secondary/40 text-foreground border-border"
                 />
               </Field>
             </Row>
@@ -117,7 +117,7 @@ export function SettingsView() {
               <Input
                 value={workspace.timezone}
                 onChange={(e) => setWorkspace({ ...workspace, timezone: e.target.value })}
-                className="bg-[#081826] text-[#DDEBFF] border-[#4DA8FF]/20"
+                className="bg-secondary/40 text-foreground border-border"
               />
             </Field>
             <SaveBtn onClick={() => toast.success("Workspace updated")} />
@@ -127,10 +127,10 @@ export function SettingsView() {
         <TabsContent value="security">
           <Card title="Security">
             <Field label="Current password">
-              <Input type="password" className="bg-[#081826] text-[#DDEBFF] border-[#4DA8FF]/20" />
+              <Input type="password" className="bg-secondary/40 text-foreground border-border" />
             </Field>
             <Field label="New password">
-              <Input type="password" className="bg-[#081826] text-[#DDEBFF] border-[#4DA8FF]/20" />
+              <Input type="password" className="bg-secondary/40 text-foreground border-border" />
             </Field>
             <Separator />
             <ToggleRow
@@ -164,8 +164,8 @@ export function SettingsView() {
 
         <TabsContent value="billing">
           <Card title="Current plan">
-            <p className="text-[#DDEBFF]/75 text-sm">
-              You're on the <span className="text-[#FF7A1A] font-semibold">Team</span> plan. Next invoice on Mar 12, 2026 for <span className="font-mono">$65.00</span>.
+            <p className="text-muted-foreground text-sm">
+              You're on the <span className="text-brand font-semibold">Team</span> plan. Next invoice on Mar 12, 2026 for <span className="font-mono">$65.00</span>.
             </p>
             <Separator />
             <div className="grid md:grid-cols-4 gap-3 mt-2">
@@ -173,11 +173,11 @@ export function SettingsView() {
                 <div
                   key={p.name}
                   className={`rounded-lg border p-4 ${
-                    p.name === "Team" ? "border-[#FF7A1A] bg-[#FF7A1A]/5" : "border-[#4DA8FF]/15"
+                    p.name === "Team" ? "border-brand bg-brand/5" : "border-border"
                   }`}
                 >
-                  <p className="text-xs uppercase tracking-[0.2em] text-[#4DA8FF]">{p.name}</p>
-                  <p className="font-sora text-2xl font-black mt-1">{p.price}<span className="text-sm text-[#DDEBFF]/50">{p.period}</span></p>
+                  <p className="text-xs uppercase tracking-[0.2em] text-accent-blue">{p.name}</p>
+                  <p className="font-sora text-2xl font-black mt-1">{p.price}<span className="text-sm text-muted-foreground">{p.period}</span></p>
                   <Button
                     size="sm"
                     variant={p.name === "Team" ? "default" : "darkOutline"}
@@ -197,7 +197,7 @@ export function SettingsView() {
 
 function Card({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="rounded-xl border border-[#4DA8FF]/15 bg-[#12283D] p-6 space-y-4">
+    <div className="rounded-xl border border-border bg-card p-6 space-y-4">
       <h2 className="font-sora font-bold">{title}</h2>
       <Separator />
       {children}
@@ -210,7 +210,7 @@ function Row({ children }: { children: React.ReactNode }) {
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="space-y-1.5">
-      <Label className="text-[#DDEBFF]">{label}</Label>
+      <Label className="text-foreground">{label}</Label>
       {children}
     </div>
   );
@@ -232,7 +232,7 @@ function ToggleRow({
     <div className="flex items-center justify-between py-2">
       <div>
         <p className="font-medium">{label}</p>
-        {desc && <p className="text-xs text-[#DDEBFF]/55">{desc}</p>}
+        {desc && <p className="text-xs text-muted-foreground">{desc}</p>}
       </div>
       <Switch
         defaultChecked={defaultChecked}

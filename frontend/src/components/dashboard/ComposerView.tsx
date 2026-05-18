@@ -126,12 +126,12 @@ export function ComposerView() {
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6" data-testid="composer-view">
       {/* LEFT: account picker */}
       <aside className="lg:col-span-3">
-        <div className="rounded-xl border border-[#4DA8FF]/15 bg-[#12283D] p-5">
-          <p className="text-[10px] uppercase tracking-[0.2em] text-[#4DA8FF] font-bold">
+        <div className="rounded-xl border border-border bg-card p-5">
+          <p className="text-[10px] uppercase tracking-[0.2em] text-accent-blue font-bold">
             Destinations
           </p>
           <h2 className="font-sora text-lg font-bold mt-1">Channels</h2>
-          <p className="text-xs text-[#DDEBFF]/55 mt-1">
+          <p className="text-xs text-muted-foreground mt-1">
             Pick where this post should fly to.
           </p>
 
@@ -144,12 +144,12 @@ export function ComposerView() {
                   key={a.id}
                   className={cn(
                     "flex items-center gap-3 p-2.5 rounded-md cursor-pointer transition-colors",
-                    checked ? "bg-[#FF7A1A]/10 border border-[#FF7A1A]/30" : "hover:bg-[#081826] border border-transparent",
+                    checked ? "bg-brand/10 border border-brand/30" : "hover:bg-secondary/40 border border-transparent",
                   )}
                   data-testid={`composer-channel-${a.id}`}
                 >
                   <Checkbox checked={checked} onCheckedChange={() => toggle(a.id)} />
-                  <Icon className="w-4 h-4 text-[#4DA8FF]" />
+                  <Icon className="w-4 h-4 text-accent-blue" />
                   <span className="text-sm truncate">{a.name}</span>
                 </label>
               );
@@ -160,10 +160,10 @@ export function ComposerView() {
 
       {/* CENTER: editor */}
       <main className="lg:col-span-6">
-        <div className="rounded-xl border border-[#4DA8FF]/15 bg-[#12283D] p-6">
+        <div className="rounded-xl border border-border bg-card p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-[10px] uppercase tracking-[0.2em] text-[#4DA8FF] font-bold">
+              <p className="text-[10px] uppercase tracking-[0.2em] text-accent-blue font-bold">
                 Composer
               </p>
               <h2 className="font-sora text-xl font-bold mt-1">Craft your post</h2>
@@ -187,15 +187,15 @@ export function ComposerView() {
               <Textarea
                 value={baseContent}
                 onChange={(e) => setBaseContent(e.target.value)}
-                className="bg-[#081826] text-[#DDEBFF] border-[#4DA8FF]/15 min-h-[180px]"
+                className="bg-secondary/40 text-foreground border-border min-h-[180px]"
                 placeholder="Write something brilliant…"
                 data-testid="composer-textarea"
               />
-              <div className="flex items-center justify-between mt-2 text-xs text-[#DDEBFF]/55">
+              <div className="flex items-center justify-between mt-2 text-xs text-muted-foreground">
                 <div className="flex gap-3">
-                  <button className="flex items-center gap-1.5 hover:text-[#FF7A1A]"><ImageIcon className="w-3.5 h-3.5" /> Media</button>
-                  <button className="flex items-center gap-1.5 hover:text-[#FF7A1A]"><Hash className="w-3.5 h-3.5" /> Tags</button>
-                  <button className="flex items-center gap-1.5 hover:text-[#FF7A1A]"><Smile className="w-3.5 h-3.5" /> Emoji</button>
+                  <button className="flex items-center gap-1.5 hover:text-brand"><ImageIcon className="w-3.5 h-3.5" /> Media</button>
+                  <button className="flex items-center gap-1.5 hover:text-brand"><Hash className="w-3.5 h-3.5" /> Tags</button>
+                  <button className="flex items-center gap-1.5 hover:text-brand"><Smile className="w-3.5 h-3.5" /> Emoji</button>
                 </div>
                 <span className="font-mono">
                   {baseContent.length} chars
@@ -209,13 +209,13 @@ export function ComposerView() {
                 <TabsContent key={p} value={p} className="space-y-4">
                   {accs.map((a) => (
                     <div key={a.id}>
-                      <p className="text-xs text-[#4DA8FF] mb-1.5">{a.name}</p>
+                      <p className="text-xs text-accent-blue mb-1.5">{a.name}</p>
                       <Textarea
                         value={contentFor(a.id)}
                         onChange={(e) => setVariants({ ...variants, [a.id]: e.target.value })}
-                        className="bg-[#081826] text-[#DDEBFF] border-[#4DA8FF]/15 min-h-[140px]"
+                        className="bg-secondary/40 text-foreground border-border min-h-[140px]"
                       />
-                      <div className="flex justify-between mt-1.5 text-[10px] text-[#DDEBFF]/50 font-mono">
+                      <div className="flex justify-between mt-1.5 text-[10px] text-muted-foreground font-mono">
                         <span>{PLATFORMS[p].label} · max {PLATFORMS[p].charLimit.toLocaleString()}</span>
                         <span className={cn(contentFor(a.id).length > PLATFORMS[p].charLimit && "text-red-400")}>
                           {contentFor(a.id).length}/{PLATFORMS[p].charLimit}
@@ -229,16 +229,16 @@ export function ComposerView() {
           </Tabs>
 
           {/* Schedule */}
-          <div className="mt-6 border-t border-[#4DA8FF]/10 pt-5 flex flex-col md:flex-row gap-3 md:items-end">
+          <div className="mt-6 border-t border-border pt-5 flex flex-col md:flex-row gap-3 md:items-end">
             <div className="flex-1">
-              <p className="text-[10px] uppercase tracking-[0.2em] text-[#4DA8FF] mb-1.5">
+              <p className="text-[10px] uppercase tracking-[0.2em] text-accent-blue mb-1.5">
                 Schedule (optional)
               </p>
               <Input
                 type="datetime-local"
                 value={scheduleAt}
                 onChange={(e) => setScheduleAt(e.target.value)}
-                className="bg-[#081826] text-[#DDEBFF] border-[#4DA8FF]/15"
+                className="bg-secondary/40 text-foreground border-border"
                 data-testid="composer-schedule-input"
               />
             </div>
@@ -262,14 +262,14 @@ export function ComposerView() {
 
       {/* RIGHT: previews */}
       <aside className="lg:col-span-3">
-        <div className="rounded-xl border border-[#4DA8FF]/15 bg-[#12283D] p-5">
-          <p className="text-[10px] uppercase tracking-[0.2em] text-[#4DA8FF] font-bold">
+        <div className="rounded-xl border border-border bg-card p-5">
+          <p className="text-[10px] uppercase tracking-[0.2em] text-accent-blue font-bold">
             Previews
           </p>
           <h2 className="font-sora text-lg font-bold mt-1">As your audience sees it</h2>
 
           {selected.size === 0 ? (
-            <p className="mt-4 text-sm text-[#DDEBFF]/55">
+            <p className="mt-4 text-sm text-muted-foreground">
               Pick a destination to see live previews.
             </p>
           ) : (
@@ -279,18 +279,18 @@ export function ComposerView() {
                 return (
                   <div
                     key={a.id}
-                    className="rounded-md bg-[#081826] border border-[#4DA8FF]/10 p-3"
+                    className="rounded-md bg-secondary/40 border border-border p-3"
                   >
                     <div className="flex items-center gap-2 mb-2">
-                      <Icon className="w-3.5 h-3.5 text-[#4DA8FF]" />
-                      <span className="text-xs font-semibold text-[#DDEBFF]/80">
+                      <Icon className="w-3.5 h-3.5 text-accent-blue" />
+                      <span className="text-xs font-semibold text-foreground/80">
                         {a.name}
                       </span>
-                      <span className="text-[10px] text-[#DDEBFF]/40 ml-auto">
+                      <span className="text-[10px] text-muted-foreground ml-auto">
                         {PLATFORMS[a.platform].label}
                       </span>
                     </div>
-                    <p className="text-xs text-[#DDEBFF]/85 whitespace-pre-wrap line-clamp-6">
+                    <p className="text-xs text-foreground/85 whitespace-pre-wrap line-clamp-6">
                       {contentFor(a.id)}
                     </p>
                   </div>

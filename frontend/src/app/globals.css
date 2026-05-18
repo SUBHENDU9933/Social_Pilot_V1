@@ -4,93 +4,81 @@
 
 @layer base {
   :root {
-    --background: 210 100% 99%;
-    --foreground: 215 67% 19%;
-    --card: 0 0% 100%;
-    --card-foreground: 215 67% 19%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 215 67% 19%;
-    --primary: 215 67% 19%;
-    --primary-foreground: 210 100% 99%;
-    --secondary: 210 100% 96%;
-    --secondary-foreground: 215 67% 19%;
-    --muted: 210 100% 96%;
-    --muted-foreground: 214 100% 65%;
-    --accent: 22 100% 55%;
+    /* Light mode (default) */
+    --background: 210 40% 98%;       /* #F8FAFC */
+    --surface: 0 0% 100%;             /* #FFFFFF */
+    --foreground: 222 47% 11%;        /* #0F172A */
+    --muted: 215 20% 65%;             /* #94A3B8 */
+    --muted-foreground: 215 16% 47%;  /* #64748B */
+    --border: 214 32% 91%;            /* #E2E8F0 */
+    --input: 214 32% 91%;
+    --ring: 217 91% 60%;              /* #2563EB */
+    --hover: 210 40% 96%;             /* #F1F5F9 */
+
+    --primary: 24 100% 50%;           /* #FF7A00 */
+    --primary-foreground: 0 0% 100%;
+    --accent: 217 91% 60%;            /* #2563EB */
     --accent-foreground: 0 0% 100%;
+    --success: 160 84% 39%;           /* #10B981 */
+    --warning: 38 92% 50%;            /* #F59E0B */
     --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 210 100% 92%;
-    --input: 210 100% 92%;
-    --ring: 214 100% 65%;
-    --radius: 0.75rem;
+    --destructive-foreground: 0 0% 100%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
+
+    --radius: 1rem;
   }
 
   .dark {
-    --background: 210 67% 8%;
-    --foreground: 213 100% 93%;
-    --card: 210 53% 16%;
-    --card-foreground: 213 100% 93%;
-    --popover: 210 53% 16%;
-    --popover-foreground: 213 100% 93%;
-    --primary: 214 100% 65%;
-    --primary-foreground: 210 67% 8%;
-    --secondary: 210 53% 20%;
-    --secondary-foreground: 213 100% 93%;
-    --muted: 210 53% 20%;
-    --muted-foreground: 214 100% 65%;
-    --accent: 22 100% 55%;
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 72% 51%;
-    --destructive-foreground: 213 100% 93%;
-    --border: 210 53% 22%;
-    --input: 210 53% 22%;
-    --ring: 214 100% 65%;
+    --background: 222 47% 4%;         /* #020617 */
+    --surface: 222 47% 11%;            /* #0F172A */
+    --foreground: 210 40% 98%;        /* #F8FAFC */
+    --muted: 215 16% 47%;
+    --muted-foreground: 215 20% 65%;
+    --border: 217 33% 17%;            /* #1E293B */
+    --input: 217 33% 17%;
+    --ring: 217 91% 60%;
+    --hover: 222 47% 11%;
+
+    --card: 222 47% 11%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222 47% 11%;
+    --popover-foreground: 210 40% 98%;
+    --secondary: 217 33% 17%;
+    --secondary-foreground: 210 40% 98%;
   }
 
-  * {
-    @apply border-border;
-  }
-  html,
-  body {
-    @apply bg-bg-light text-ink-light;
-    font-family: "DM Sans", sans-serif;
+  * { @apply border-border; }
+  html, body {
+    background: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-family: "Inter", "Sora", sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-  }
-  body.dashboard {
-    @apply bg-bg-dark text-ink-dark;
+    font-feature-settings: "cv11", "ss01", "ss03";
   }
   h1, h2, h3, h4, h5, h6 {
-    font-family: "Sora", sans-serif;
+    font-family: "Sora", "Inter", sans-serif;
     letter-spacing: -0.02em;
   }
-
-  ::selection {
-    background: #ff7a1a;
-    color: #fff;
-  }
+  ::selection { background: #FF7A00; color: #fff; }
 }
 
 @layer utilities {
   .text-balance { text-wrap: balance; }
-  .grid-faint-bg {
-    background-image:
-      linear-gradient(rgba(15,45,82,0.06) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(15,45,82,0.06) 1px, transparent 1px);
-    background-size: 32px 32px;
-  }
-  .grid-faint-bg-dark {
-    background-image:
-      linear-gradient(rgba(77,168,255,0.05) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(77,168,255,0.05) 1px, transparent 1px);
-    background-size: 32px 32px;
-  }
-  .radar-glow {
-    background: radial-gradient(circle at 50% 50%, rgba(77,168,255,0.18), transparent 65%);
-  }
   .scrollbar-thin {
     scrollbar-width: thin;
-    scrollbar-color: rgba(77,168,255,0.3) transparent;
+    scrollbar-color: hsl(var(--border)) transparent;
+  }
+  .gradient-text-orange {
+    background: linear-gradient(135deg, #FF7A00 0%, #FF9A40 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
 }

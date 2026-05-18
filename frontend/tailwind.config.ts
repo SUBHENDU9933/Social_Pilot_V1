@@ -10,37 +10,35 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sora: ["Sora", "sans-serif"],
-        dm: ["DM Sans", "sans-serif"],
+        sans: ["Inter", "Sora", "sans-serif"],
+        sora: ["Sora", "Inter", "sans-serif"],
+        inter: ["Inter", "sans-serif"],
       },
       colors: {
-        navy: {
-          DEFAULT: "#0F2D52",
-          900: "#0F2D52",
-          800: "#12283D",
-          950: "#081826",
-        },
-        sky: {
-          brand: "#4DA8FF",
+        // Legacy aliases kept for older marketing components
+        navy: { DEFAULT: "#0F172A", 900: "#0F172A", 800: "#1E293B", 950: "#020617" },
+        sky: { brand: "#2563EB" },
+
+        // Brand
+        brand: {
+          DEFAULT: "#FF7A00",
+          50: "#FFF4EB",
+          100: "#FFE4CC",
+          200: "#FFC799",
+          500: "#FF7A00",
+          600: "#E66E00",
         },
         accent: {
-          DEFAULT: "#FF7A1A",
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
+          blue: "#2563EB",
         },
-        bg: {
-          light: "#F8FBFF",
-          section: "#EAF4FF",
-          dark: "#081826",
-          card: "#12283D",
-        },
-        ink: {
-          light: "#0F2D52",
-          dark: "#DDEBFF",
-          muted: "#4DA8FF",
-        },
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
+        success: { DEFAULT: "#10B981", soft: "#D1FAE5" },
+        warning: { DEFAULT: "#F59E0B", soft: "#FEF3C7" },
+
+        // Semantic (shadcn)
         background: "hsl(var(--background))",
+        surface: "hsl(var(--surface))",
         foreground: "hsl(var(--foreground))",
         primary: {
           DEFAULT: "hsl(var(--primary))",
@@ -50,56 +48,42 @@ const config: Config = {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
         },
-        destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
-        },
         muted: {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
         },
-        card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
+        card: { DEFAULT: "hsl(var(--card))", foreground: "hsl(var(--card-foreground))" },
+        popover: { DEFAULT: "hsl(var(--popover))", foreground: "hsl(var(--popover-foreground))" },
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
         },
-        popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
-        },
+        // Backwards compat (don't break legacy marketing pages)
+        bg: { light: "#F8FAFC", section: "#F1F5F9", dark: "#020617", card: "#0F172A" },
+        ink: { light: "#0F172A", dark: "#F8FAFC", muted: "#64748B" },
       },
       borderRadius: {
+        xl: "1rem",
+        "2xl": "1.25rem",
         lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        md: "calc(var(--radius) - 4px)",
+        sm: "calc(var(--radius) - 8px)",
       },
-      backgroundImage: {
-        "grid-faint":
-          "linear-gradient(rgba(77,168,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(77,168,255,0.06) 1px, transparent 1px)",
-        "radar-dark":
-          "radial-gradient(circle at 50% 50%, rgba(77,168,255,0.08), transparent 60%)",
-      },
-      backgroundSize: {
-        grid: "32px 32px",
+      boxShadow: {
+        soft: "0 1px 2px rgba(15,23,42,0.04), 0 4px 12px rgba(15,23,42,0.04)",
+        lift: "0 8px 24px -8px rgba(15,23,42,0.10), 0 2px 4px rgba(15,23,42,0.04)",
+        glow: "0 8px 32px -12px rgba(255,122,0,0.35)",
       },
       keyframes: {
-        float: {
-          "0%,100%": { transform: "translateY(0px)" },
-          "50%": { transform: "translateY(-8px)" },
-        },
-        sweep: {
-          "0%": { transform: "rotate(0deg)" },
-          "100%": { transform: "rotate(360deg)" },
-        },
         fadeUp: {
-          "0%": { opacity: "0", transform: "translateY(12px)" },
+          "0%": { opacity: "0", transform: "translateY(8px)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
         },
       },
-      animation: {
-        float: "float 6s ease-in-out infinite",
-        sweep: "sweep 12s linear infinite",
-        fadeUp: "fadeUp 0.6s ease-out both",
-      },
+      animation: { fadeUp: "fadeUp 0.4s ease-out both" },
     },
   },
   plugins: [require("tailwindcss-animate")],

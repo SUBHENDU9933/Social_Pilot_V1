@@ -72,9 +72,9 @@ export function TeamView() {
     <div className="space-y-6" data-testid="team-view">
       <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-3">
         <div>
-          <p className="text-xs uppercase tracking-[0.3em] text-[#4DA8FF] font-bold">Flight Crew</p>
+          <p className="text-xs uppercase tracking-[0.3em] text-accent-blue font-bold">Flight Crew</p>
           <h1 className="font-sora text-3xl md:text-4xl font-black mt-1">Team</h1>
-          <p className="text-[#DDEBFF]/65 text-sm mt-1">
+          <p className="text-muted-foreground text-sm mt-1">
             Manage roles, draft approvals, and seats.
           </p>
         </div>
@@ -91,19 +91,19 @@ export function TeamView() {
             </DialogHeader>
             <div className="space-y-4">
               <div className="space-y-1.5">
-                <Label htmlFor="invite-email" className="text-[#DDEBFF]">Email</Label>
+                <Label htmlFor="invite-email" className="text-foreground">Email</Label>
                 <Input
                   id="invite-email"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="bg-[#081826] text-[#DDEBFF] border-[#4DA8FF]/20"
+                  className="bg-secondary/40 text-foreground border-border"
                   placeholder="teammate@brand.com"
                   data-testid="team-invite-email"
                 />
               </div>
               <div className="space-y-1.5">
-                <Label className="text-[#DDEBFF]">Role</Label>
+                <Label className="text-foreground">Role</Label>
                 <Select value={role} onValueChange={(v) => setRole(v as Role)}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
                   <SelectContent>
@@ -123,14 +123,14 @@ export function TeamView() {
         </Dialog>
       </div>
 
-      <div className="rounded-xl border border-[#4DA8FF]/15 bg-[#12283D]">
-        <div className="px-6 py-4 border-b border-[#4DA8FF]/10 text-[10px] uppercase tracking-[0.25em] text-[#4DA8FF] font-bold grid grid-cols-12 gap-4">
+      <div className="rounded-xl border border-border bg-card">
+        <div className="px-6 py-4 border-b border-border text-[10px] uppercase tracking-[0.25em] text-accent-blue font-bold grid grid-cols-12 gap-4">
           <span className="col-span-5">Member</span>
           <span className="col-span-3">Role</span>
           <span className="col-span-2">Status</span>
           <span className="col-span-2 text-right">Actions</span>
         </div>
-        <div className="divide-y divide-[#4DA8FF]/10">
+        <div className="divide-y divide-border">
           {members.map((m) => (
             <div
               key={m.email}
@@ -145,7 +145,7 @@ export function TeamView() {
                 </Avatar>
                 <div className="min-w-0">
                   <p className="font-semibold text-sm truncate">{m.name}</p>
-                  <p className="text-xs text-[#DDEBFF]/50 truncate">{m.email}</p>
+                  <p className="text-xs text-muted-foreground truncate">{m.email}</p>
                 </div>
               </div>
               <div className="col-span-3">

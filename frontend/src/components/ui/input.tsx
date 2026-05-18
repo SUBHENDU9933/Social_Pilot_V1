@@ -7,7 +7,7 @@ const Input = React.forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTMLI
       type={type}
       ref={ref}
       className={cn(
-        "flex h-11 w-full rounded-md border border-[#0F2D52]/15 bg-white px-3 py-2 text-sm text-[#0F2D52] placeholder:text-[#0F2D52]/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4DA8FF] focus-visible:border-transparent disabled:cursor-not-allowed disabled:opacity-50 transition-colors",
+        "flex h-11 w-full rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:border-transparent disabled:cursor-not-allowed disabled:opacity-50 transition-colors",
         className,
       )}
       {...props}
@@ -21,7 +21,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, React.TextareaHTMLAttribu
     <textarea
       ref={ref}
       className={cn(
-        "flex min-h-[120px] w-full rounded-md border border-[#0F2D52]/15 bg-white px-3 py-2 text-sm text-[#0F2D52] placeholder:text-[#0F2D52]/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4DA8FF] focus-visible:border-transparent disabled:cursor-not-allowed disabled:opacity-50 transition-colors resize-y",
+        "flex min-h-[120px] w-full rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:border-transparent disabled:cursor-not-allowed disabled:opacity-50 transition-colors resize-y",
         className,
       )}
       {...props}

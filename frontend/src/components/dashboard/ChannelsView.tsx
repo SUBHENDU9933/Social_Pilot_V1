@@ -99,18 +99,18 @@ export function ChannelsView() {
     <div className="space-y-6" data-testid="channels-view">
       <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-3">
         <div>
-          <p className="text-xs uppercase tracking-[0.3em] text-[#4DA8FF] font-bold">
+          <p className="text-xs uppercase tracking-[0.3em] text-accent-blue font-bold">
             Fleet
           </p>
           <h1 className="font-sora text-3xl md:text-4xl font-black mt-1">Channels</h1>
-          <p className="text-[#DDEBFF]/65 text-sm mt-1">
+          <p className="text-muted-foreground text-sm mt-1">
             Connect your social accounts. We handle the rest — no API keys required.
           </p>
         </div>
       </div>
 
       {/* Available platforms */}
-      <div className="rounded-xl border border-[#4DA8FF]/15 bg-[#12283D] p-6">
+      <div className="rounded-xl border border-border bg-card p-6">
         <h2 className="font-sora font-bold mb-4">Available platforms</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {(Object.keys(PLATFORMS) as PlatformKey[]).map((p) => {
@@ -121,7 +121,7 @@ export function ChannelsView() {
                 key={p}
                 onClick={() => connect(p)}
                 disabled={connecting === p}
-                className="group flex flex-col items-start gap-3 p-4 rounded-lg border border-[#4DA8FF]/15 bg-[#081826] hover:border-[#FF7A1A]/40 hover:-translate-y-0.5 transition-all disabled:opacity-50 text-left"
+                className="group flex flex-col items-start gap-3 p-4 rounded-lg border border-border bg-secondary/40 hover:border-brand/40 hover:-translate-y-0.5 transition-all disabled:opacity-50 text-left"
                 data-testid={`connect-${p}`}
               >
                 <div
@@ -132,11 +132,11 @@ export function ChannelsView() {
                 </div>
                 <div className="flex-1">
                   <p className="font-semibold text-sm">{info.label}</p>
-                  <p className="text-[10px] text-[#DDEBFF]/40 uppercase tracking-wider mt-0.5">
+                  <p className="text-[10px] text-muted-foreground uppercase tracking-wider mt-0.5">
                     {info.mock ? "OAuth ready" : "Live OAuth"}
                   </p>
                 </div>
-                <span className="text-xs text-[#FF7A1A] flex items-center gap-1 group-hover:gap-2 transition-all">
+                <span className="text-xs text-brand flex items-center gap-1 group-hover:gap-2 transition-all">
                   {connecting === p ? (
                     <>
                       <Loader2 className="w-3 h-3 animate-spin" /> Connecting…
@@ -154,11 +154,11 @@ export function ChannelsView() {
       </div>
 
       {/* Connected channels */}
-      <div className="rounded-xl border border-[#4DA8FF]/15 bg-[#12283D]">
-        <div className="px-6 py-4 border-b border-[#4DA8FF]/10 flex items-center justify-between">
+      <div className="rounded-xl border border-border bg-card">
+        <div className="px-6 py-4 border-b border-border flex items-center justify-between">
           <h2 className="font-sora font-bold">Connected ({conns.length})</h2>
         </div>
-        <div className="divide-y divide-[#4DA8FF]/10">
+        <div className="divide-y divide-border">
           {conns.map((c) => {
             const Icon = ICONS[c.platform];
             const info = PLATFORMS[c.platform];
@@ -177,7 +177,7 @@ export function ChannelsView() {
                 </div>
                 <div className="flex-1">
                   <p className="font-semibold text-sm">{c.name}</p>
-                  <p className="text-xs text-[#DDEBFF]/50">{info.label}</p>
+                  <p className="text-xs text-muted-foreground">{info.label}</p>
                 </div>
                 {isOK ? (
                   <Badge variant="success">
@@ -202,7 +202,7 @@ export function ChannelsView() {
             );
           })}
           {conns.length === 0 && (
-            <div className="px-6 py-12 text-center text-sm text-[#DDEBFF]/50">
+            <div className="px-6 py-12 text-center text-sm text-muted-foreground">
               No channels connected yet. Pick a platform above to get started.
             </div>
           )}

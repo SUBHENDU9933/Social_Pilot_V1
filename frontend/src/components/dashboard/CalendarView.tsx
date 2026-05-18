@@ -9,12 +9,12 @@ import { cn } from "@/lib/utils";
 type Event = { date: string; time: string; title: string; color: string };
 
 const EVENTS: Event[] = [
-  { date: new Date().toISOString().slice(0, 10), time: "10:00", title: "Spring sale launch", color: "#FF7A1A" },
-  { date: new Date().toISOString().slice(0, 10), time: "14:30", title: "BTS reel", color: "#4DA8FF" },
-  { date: new Date(Date.now() + 86400000).toISOString().slice(0, 10), time: "09:00", title: "Weekly digest", color: "#FF7A1A" },
+  { date: new Date().toISOString().slice(0, 10), time: "10:00", title: "Spring sale launch", color: "#FF7A00" },
+  { date: new Date().toISOString().slice(0, 10), time: "14:30", title: "BTS reel", color: "#2563EB" },
+  { date: new Date(Date.now() + 86400000).toISOString().slice(0, 10), time: "09:00", title: "Weekly digest", color: "#FF7A00" },
   { date: new Date(Date.now() + 86400000 * 2).toISOString().slice(0, 10), time: "11:30", title: "Blog post share", color: "#10b981" },
-  { date: new Date(Date.now() + 86400000 * 3).toISOString().slice(0, 10), time: "16:00", title: "Customer story", color: "#4DA8FF" },
-  { date: new Date(Date.now() + 86400000 * 5).toISOString().slice(0, 10), time: "10:00", title: "Product tip", color: "#FF7A1A" },
+  { date: new Date(Date.now() + 86400000 * 3).toISOString().slice(0, 10), time: "16:00", title: "Customer story", color: "#2563EB" },
+  { date: new Date(Date.now() + 86400000 * 5).toISOString().slice(0, 10), time: "10:00", title: "Product tip", color: "#FF7A00" },
 ];
 
 export function CalendarView() {
@@ -51,9 +51,9 @@ export function CalendarView() {
     <div className="space-y-6" data-testid="calendar-view">
       <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-3">
         <div>
-          <p className="text-xs uppercase tracking-[0.3em] text-[#4DA8FF] font-bold">Flight Plan</p>
+          <p className="text-xs uppercase tracking-[0.3em] text-accent-blue font-bold">Flight Plan</p>
           <h1 className="font-sora text-3xl md:text-4xl font-black mt-1">Calendar</h1>
-          <p className="text-[#DDEBFF]/65 text-sm mt-1">
+          <p className="text-muted-foreground text-sm mt-1">
             Click any day to schedule. Drag posts to reschedule.
           </p>
         </div>
@@ -64,33 +64,33 @@ export function CalendarView() {
         </Link>
       </div>
 
-      <div className="rounded-xl border border-[#4DA8FF]/15 bg-[#12283D] overflow-hidden">
-        <div className="flex items-center justify-between px-6 py-4 border-b border-[#4DA8FF]/10">
+      <div className="rounded-xl border border-border bg-card overflow-hidden">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-border">
           <div className="flex items-center gap-1">
             <button
               onClick={prev}
-              className="w-9 h-9 grid place-items-center rounded-md hover:bg-[#081826]"
+              className="w-9 h-9 grid place-items-center rounded-md hover:bg-secondary/40"
               data-testid="calendar-prev"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
             <button
               onClick={next}
-              className="w-9 h-9 grid place-items-center rounded-md hover:bg-[#081826]"
+              className="w-9 h-9 grid place-items-center rounded-md hover:bg-secondary/40"
               data-testid="calendar-next"
             >
               <ChevronRight className="w-4 h-4" />
             </button>
             <h2 className="font-sora text-lg font-bold ml-2">{monthName}</h2>
           </div>
-          <div className="flex items-center gap-2 text-xs text-[#DDEBFF]/55">
-            <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-[#FF7A1A]" /> Scheduled</span>
-            <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-[#4DA8FF]" /> Queued</span>
+          <div className="flex items-center gap-2 text-xs text-muted-foreground">
+            <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-brand" /> Scheduled</span>
+            <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-accent-blue" /> Queued</span>
             <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-emerald-500" /> Published</span>
           </div>
         </div>
 
-        <div className="grid grid-cols-7 border-b border-[#4DA8FF]/10 text-[10px] uppercase tracking-[0.25em] text-[#4DA8FF] font-bold">
+        <div className="grid grid-cols-7 border-b border-border text-[10px] uppercase tracking-[0.25em] text-accent-blue font-bold">
           {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((d) => (
             <div key={d} className="px-3 py-2.5">{d}</div>
           ))}
@@ -104,14 +104,14 @@ export function CalendarView() {
               <div
                 key={i}
                 className={cn(
-                  "border-r border-b border-[#4DA8FF]/10 p-2 hover:bg-[#081826]/40 transition-colors min-h-[100px]",
-                  !c.d && "bg-[#081826]/20",
+                  "border-r border-b border-border p-2 hover:bg-secondary/40/40 transition-colors min-h-[100px]",
+                  !c.d && "bg-secondary/40/20",
                 )}
                 data-testid={c.iso ? `calendar-day-${c.iso}` : undefined}
               >
                 {c.d && (
                   <>
-                    <p className={cn("text-xs font-mono mb-2", isToday ? "text-[#FF7A1A] font-bold" : "text-[#DDEBFF]/55")}>
+                    <p className={cn("text-xs font-mono mb-2", isToday ? "text-brand font-bold" : "text-muted-foreground")}>
                       {String(c.d).padStart(2, "0")}{isToday && " · today"}
                     </p>
                     <div className="space-y-1">
